@@ -11,7 +11,7 @@
 #endif
 
 #define FULLSCREEN
-#define ADVANCEDGL
+//#define ADVANCEDGL
 
 #include "game.h"
 

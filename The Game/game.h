@@ -7,11 +7,15 @@ class Sprite;
 class Game
 {
 public:
-	void DrawBall(Surface* screen, Sprite ball);
-	void DrawLeftSideWall(Surface* screen, Sprite leftWall);
-	void DrawRightSideWall(Surface* screen, Sprite rightWall);
-	void DrawFloor(Surface* screen, Sprite floor);
-	void DrawRoof(Surface* screen, Sprite roof);
+	void DrawBall(Surface* screen, Sprite& ball);
+	void DrawLeftSideWall(Surface* screen, Sprite& leftWall);
+	void DrawRightSideWall(Surface* screen, Sprite& rightWall);
+	void DrawFloor(Surface* screen, Sprite& floor);
+	void DrawRoof(Surface* screen, Sprite& roof);
+	void DrawRampTR(Surface* screen, Sprite& rampTR);
+	void DrawRampTL(Surface* screen, Sprite& rampTL);
+	void DrawRampBR(Surface* screen, Sprite& rampBR);
+	void DrawRampBL(Surface* screen, Sprite& rampBL);
 public:
 	void SetTarget( Surface* surface ){ screen = surface; }
 	void Init();
