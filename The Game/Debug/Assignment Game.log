@@ -1,1 +1,8 @@
-﻿  Assignment Game.vcxproj -> D:\Programming Stuff\Programming Assignment BUAS\The Game\Assignment Game_x64_debug.exe
+﻿  game.cpp
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(170,75): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(170,67): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(170,47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(170,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  template.cpp
+  Generating Code...
+  Assignment Game.vcxproj -> D:\Programming Stuff\Programming Assignment BUAS\The Game\Assignment Game_x64_debug.exe

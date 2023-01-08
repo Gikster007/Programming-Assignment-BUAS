@@ -115,10 +115,6 @@ namespace Tmpl8
 	{
 	}
 
-	float x = 400, y = 256;
-
-	
-
 	// -----------------------------------------------------------
 	// Main application tick function
 	// -----------------------------------------------------------
@@ -143,39 +139,11 @@ namespace Tmpl8
 		DrawRampBR(screen, rampBR);
 		DrawRampBL(screen, rampBL);
 
-		if (GetAsyncKeyState(VK_LEFT))
-		{
-			ballX--;
-		}
-
-		if (GetAsyncKeyState(VK_RIGHT)) 
-		{
-			ballX++;
-		}
-
-		if (GetAsyncKeyState(VK_UP))
-		{
-			ballY--;
-		}
-
-		if (GetAsyncKeyState(VK_DOWN))
-		{
-			ballY++;
-		}
-
-		
 
 
-		//screen->Clear(0);
 		screen->Line(ballX + (BALLWIDTH / 2), ballY + (BALLHEIGHT / 2), mouseX, mouseY, 0xff0000);
 
 		
-		/*float dx = x - mouseX, dy = y - mouseY;
-		float dist = sqrtf(dx * dx + dy * dy);
-		if (dist < 50)
-			x += dx / dist, y += dy / dist;
-		screen->Plot((int)x, (int)y, 0xffffff);*/
-
 		//screen->Print("Game Initialised", 2, 2, 0xffffff);
 		
 

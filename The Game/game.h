@@ -28,29 +28,16 @@ public:
 	void Tick( float deltaTime );
 	void MouseUp( int button ) 
 	{  
-		/*int dx = 0;
-
-		newMouseX = mouseX;
-		newMouseY = mouseY;
-		dx = newMouseX - initialMouseX;
-
-		std::cout << "New mouseX = " << newMouseX << " ";
-		std::cout << "Distance Between X's = " << dx << " ";
 		
-		screen->Line(initialMouseX, initialMouseY, initialMouseX - dx, initialMouseY, 0xffffff);*/
 	}
 	void MouseDown(int button) 
 	{
-		// While Left Mouse Button is pressed, calculate the distance at which the cursor is at, from the ball, and project a line in the opposite dirrection attached to the ball.
-		/*initialMouseX = mouseX;
-		initialMouseY = mouseY;
-		std::cout << "Intial mouseX = " << initialMouseX << " ";*/
-
 		dx = mouseX - ballX;
 		dy = mouseY - ballY;
 
 		ballX += dx - (BALLWIDTH / 2);
 		ballY += dy - (BALLHEIGHT / 2);
+
 	}
 	void MouseMove(int x, int y) { mouseX = x, mouseY = y; }
 	void KeyUp( int key ) { /* implement if you want to handle keys */ }
