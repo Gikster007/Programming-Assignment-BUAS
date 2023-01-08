@@ -1,12 +1,15 @@
 #include "game.h"
 #include "surface.h"
 #include <cstdio> //printf
+#include <corecrt_math.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 #define SCREENWIDTH 1920
 #define SCREENHEIGHT 1080
 
-#define BALLWIDTH 50
-#define BALLHEIGHT 50
+#define BALLWIDTH 60
+#define BALLHEIGHT 60
 
 #define TILEWIDTH 256
 #define TILEHEIGHT 256
@@ -14,10 +17,13 @@
 
 namespace Tmpl8
 {
+	
+	
+
 	// Draws the ball on the screen
 	void Game::DrawBall(Surface* screen, Sprite& ball)
 	{
-		ball.Draw(screen, 200, 300);
+		ball.DrawScaled(ballX, ballY, BALLWIDTH, BALLHEIGHT, screen);
 	}
 
 	// Draws the left-side wall
@@ -80,7 +86,7 @@ namespace Tmpl8
 		rampBL.DrawScaled(TILEWIDTH / 2, SCREENHEIGHT - ((TILEHEIGHT / 2) + 160), 128, 128, screen);
 	}
 
-	static Sprite ball(new Surface("assets/ball.png"), 1);
+	static Sprite ball(new Surface("assets/ball2.png"), 1);
 
 	static Sprite leftSideWall(new Surface("assets/ground0.png"), 1);
 	static Sprite rightSideWall(new Surface("assets/ground0.png"), 1);
@@ -99,6 +105,26 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
+		
+	}
+	
+	// -----------------------------------------------------------
+	// Close down application
+	// -----------------------------------------------------------
+	void Game::Shutdown()
+	{
+	}
+
+	float x = 400, y = 256;
+
+	
+
+	// -----------------------------------------------------------
+	// Main application tick function
+	// -----------------------------------------------------------
+	void Game::Tick(float deltaTime)
+	{
+
 		// Clearing the screen and setting the background colour to gray
 		screen->Clear(0x222222);
 
@@ -116,22 +142,39 @@ namespace Tmpl8
 		DrawRampTL(screen, rampTL);
 		DrawRampBR(screen, rampBR);
 		DrawRampBL(screen, rampBL);
-	}
-	
-	// -----------------------------------------------------------
-	// Close down application
-	// -----------------------------------------------------------
-	void Game::Shutdown()
-	{
-	}
 
-	// -----------------------------------------------------------
-	// Main application tick function
-	// -----------------------------------------------------------
-	void Game::Tick(float deltaTime)
-	{
+		if (GetAsyncKeyState(VK_LEFT))
+		{
+			ballX--;
+		}
+
+		if (GetAsyncKeyState(VK_RIGHT)) 
+		{
+			ballX++;
+		}
+
+		if (GetAsyncKeyState(VK_UP))
+		{
+			ballY--;
+		}
+
+		if (GetAsyncKeyState(VK_DOWN))
+		{
+			ballY++;
+		}
+
 		
+
+
+		//screen->Clear(0);
+		screen->Line(ballX + (BALLWIDTH / 2), ballY + (BALLHEIGHT / 2), mouseX, mouseY, 0xff0000);
+
 		
+		/*float dx = x - mouseX, dy = y - mouseY;
+		float dist = sqrtf(dx * dx + dy * dy);
+		if (dist < 50)
+			x += dx / dist, y += dy / dist;
+		screen->Plot((int)x, (int)y, 0xffffff);*/
 
 		//screen->Print("Game Initialised", 2, 2, 0xffffff);
 		
