@@ -1,6 +1,10 @@
 ﻿  game.cpp
-D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(191,13): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(192,13): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(200,13): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(205,13): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(139,75): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(139,67): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(139,47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(139,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(161,13): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(162,13): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(170,13): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+D:\Programming Stuff\Programming Assignment BUAS\The Game\game.cpp(175,13): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
   Assignment Game.vcxproj -> D:\Programming Stuff\Programming Assignment BUAS\The Game\Assignment Game_x64_debug.exe

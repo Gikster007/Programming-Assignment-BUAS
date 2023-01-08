@@ -4,6 +4,8 @@
 #include <corecrt_math.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <vector>
+#include "coin.h"
 
 #define SCREENWIDTH 1920
 #define SCREENHEIGHT 1080
@@ -13,9 +15,6 @@
 
 #define TILEWIDTH 256
 #define TILEHEIGHT 256
-
-#define COINWIDTH 40
-#define COINHEIGHT 40
 
 #define SPIKESWIDTH 128
 #define SPIKESHEIGHT 32
@@ -30,19 +29,14 @@ namespace Tmpl8
 	static Sprite floor(new Surface("assets/ground1.png"), 1);
 	static Sprite roof(new Surface("assets/ground0.png"), 1);
 
-	static Sprite coin1(new Surface("assets/coin.png"), 1);
-	//static Sprite coin2(new Surface("assets/coin.png"), 1);
-	//static Sprite coin3(new Surface("assets/coin.png"), 1);
-	//static Sprite coin4(new Surface("assets/coin.png"), 1);
-	//static Sprite coin5(new Surface("assets/coin.png"), 1);
-	//static Sprite coin6(new Surface("assets/coin.png"), 1);
-	//static Sprite coin7(new Surface("assets/coin.png"), 1);
+	static Sprite coin(new Surface("assets/coin.png"), 1);
 
 	static Sprite spikes(new Surface("assets/spikes.png"), 1);
 
+	Coin coins[7]{};
+
 	int ballX = 1000;
 	int ballY = 300;
-	int coinsCollected = 0;
 	
 	// Draws the ball on the screen
 	void Game::DrawBall(Surface* screen, Sprite& ball)
@@ -86,38 +80,10 @@ namespace Tmpl8
 		}
 	}
 
-	// Draws a Coin at a desired location
-	void Game::DrawCoin(Surface* screen, Sprite& coin, int x, int y)
-	{
-		coin.DrawScaled(x, y, COINWIDTH, COINHEIGHT, screen);
-	}
-
 	void Game::DrawSpikes(Surface* screen, Sprite& spikes, int x)
 	{
 		spikes.DrawScaled(x, SCREENHEIGHT - 190, SPIKESWIDTH, SPIKESHEIGHT, screen);
 	}
-
-
-	void DeleteCoin(Surface* screen, Sprite& coin)
-	{
-		screen->Clear(0x222222);
-
-		// Drawing the ball
-		Game::DrawBall(screen, ball);
-
-		// Drawing the spikes
-		Game::DrawSpikes(screen, spikes, 500);
-		Game::DrawSpikes(screen, spikes, 1300);
-
-		// Drawing the following sprites: Floor, Roof, Right-Side Wall, Left-Side Wall
-		Game::DrawFloor(screen, floor);
-		Game::DrawRoof(screen, roof);
-		Game::DrawRightSideWall(screen, rightSideWall);
-		Game::DrawLeftSideWall(screen, leftSideWall);
-	}
-
-
-	
 
 
 	// -----------------------------------------------------------
@@ -125,7 +91,14 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		
+		// Initializing an array of coins
+		coins[0] = Coin(&coin, 300, 500);
+		coins[1] = Coin(&coin, 1000, 700);
+		coins[2] = Coin(&coin, 1250, 870);
+		coins[3] = Coin(&coin, 300, 880);
+		coins[4] = Coin(&coin, 550, 820);
+		coins[5] = Coin(&coin, 1400, 160);
+		coins[6] = Coin(&coin, 1600, 600);
 	}
 	
 	// -----------------------------------------------------------
@@ -144,13 +117,10 @@ namespace Tmpl8
 		screen->Clear(0x222222);
 
 		// Drawing the coins
-		DrawCoin(screen, coin1, 500, 300);
-		//DrawCoin(screen, coin2, 1000, 700);
-		//DrawCoin(screen, coin3, 1250, 870);
-		//DrawCoin(screen, coin4, 300, 880);
-		//DrawCoin(screen, coin5, 550, 820);
-		//DrawCoin(screen, coin6, 1400, 160);
-		//DrawCoin(screen, coin7, 1600, 600);
+		for (int i = 0; i < 7; i++)
+		{
+			coins[i].Draw(screen);
+		}
 
 		// Drawing the ball
 		DrawBall(screen, ball);
@@ -208,34 +178,27 @@ namespace Tmpl8
 		{
 			xv = 0;
 			yv = 0;
-			screen->Print("GAME OVER!", 960, 540, 0xffffff);
+			screen->Print("YOU DIED!", 960, 540, 0xffffff);
 		}
 		else if ((ballX >= 1255 && ballX <= 1408) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes onthe right
 		{
 			xv = 0;
 			yv = 0;
-			screen->Print("GAME OVER!", 960, 540, 0xffffff);
+			screen->Print("YOU DIED!", 940, 540, 0xffffff);
 		}
-		else if ((ballX >= 500 && ballX <= 540) && (ballY >= 300 && ballY <= 340))
+		
+
+		for (int i = 0; i < 7; i++)
 		{
-			coinsCollected++;
-			screen->Print("Score +1", 1700, 150, 0xffffff);
-			DeleteCoin(screen, coin1);
+			coins[i].CollisionCheck(ballX, ballY, BALLWIDTH, BALLHEIGHT);
 		}
-
 		
+		if (Coin::HasWon())
+		{
+			xv = 0;
+			yv = 0;
+			screen->Print("YOU WIN!", 950, 540, 0xffffff);
+		}
 		
-		
-		
-
-		//screen->Print("Game Initialised", 2, 2, 0xffffff);
-		
-
-		//printf("The height of the ball: %i \n", ball.GetHeight());
-		//printf("The width of the ball: %i \n", ball.GetWidth());
-
-
-		//printf("The height of tile1: %i \n", leftSideWall.GetHeight()); --  256 X 256
-		//printf("The width of tile1: %i \n", leftSideWall.GetWidth());
 	}
 };
