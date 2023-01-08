@@ -14,12 +14,14 @@
 #define TILEWIDTH 256
 #define TILEHEIGHT 256
 
+#define COINWIDTH 40
+#define COINHEIGHT 40
 
 namespace Tmpl8
 {
+	int ballX = 500;
+	int ballY = 300;
 	
-	
-
 	// Draws the ball on the screen
 	void Game::DrawBall(Surface* screen, Sprite& ball)
 	{
@@ -86,6 +88,12 @@ namespace Tmpl8
 		rampBL.DrawScaled(TILEWIDTH / 2, SCREENHEIGHT - ((TILEHEIGHT / 2) + 160), 128, 128, screen);
 	}
 
+	// Draws the Coin at a desired location
+	void Game::DrawCoin(Surface* screen, Sprite& coin, int x, int y)
+	{
+		coin.DrawScaled(x, y, COINWIDTH, COINHEIGHT, screen);
+	}
+
 	static Sprite ball(new Surface("assets/ball2.png"), 1);
 
 	static Sprite leftSideWall(new Surface("assets/ground0.png"), 1);
@@ -99,6 +107,8 @@ namespace Tmpl8
 
 	static Sprite rampBR(new Surface("assets/rampBR.png"), 1);
 	static Sprite rampBL(new Surface("assets/rampBL.png"), 1);
+
+	static Sprite coin(new Surface("assets/coin.png"), 1);
 
 	// -----------------------------------------------------------
 	// Initialize the application
@@ -120,9 +130,12 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Tick(float deltaTime)
 	{
-
 		// Clearing the screen and setting the background colour to gray
 		screen->Clear(0x222222);
+
+
+		// Drawing the coins
+		DrawCoin(screen, coin, 500, 300);
 
 		// Drawing the ball
 		DrawBall(screen, ball);
@@ -140,10 +153,44 @@ namespace Tmpl8
 		DrawRampBL(screen, rampBL);
 
 
-
 		screen->Line(ballX + (BALLWIDTH / 2), ballY + (BALLHEIGHT / 2), mouseX, mouseY, 0xff0000);
 
 		
+		if (click && !release)
+		{
+			//screen->Print("Mouse", 10, 10, 0xffffff);
+			dx = (mouseX - ballX); // Calculates the difference between x's
+			dy = (mouseY - ballY); // Calculates the difference between y's
+			angle = atan2(dy, dx); // Calculates the angle
+
+			// Calculates the velocity 
+			xv = cos(angle) * 10;
+			yv = sin(angle) * 10;
+		}
+		if (release) // On release
+		{
+			click = 0; // Reset the click variable
+			release = 0; // Reset the release variable
+		}
+
+		if (click == 0) // During release
+		{
+			ballX += xv; // Moves the ball in the new direction on X axis
+			ballY += yv; // Moves the ball in the new direction on Y axis
+		}
+
+		// Collision Checking
+
+		if (ballX < 129 || ballX > SCREENWIDTH - 185) // Checking for collision with the Left Side Wall and Right Side Wall
+		{
+			xv = -xv;
+		}
+		else if (ballY > SCREENHEIGHT - 215 || ballY < 128) // Checking for collision with the Floor and Roof
+		{
+			yv = -yv;
+		}
+		
+
 		//screen->Print("Game Initialised", 2, 2, 0xffffff);
 		
 
@@ -154,4 +201,9 @@ namespace Tmpl8
 		//printf("The height of tile1: %i \n", leftSideWall.GetHeight()); --  256 X 256
 		//printf("The width of tile1: %i \n", leftSideWall.GetWidth());
 	}
+
+	/*bool CheckPos(int x, int y)
+	{
+
+	}*/
 };

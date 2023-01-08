@@ -21,36 +21,23 @@ public:
 	void DrawRampTL(Surface* screen, Sprite& rampTL);
 	void DrawRampBR(Surface* screen, Sprite& rampBR);
 	void DrawRampBL(Surface* screen, Sprite& rampBL);
+	void DrawCoin(Surface* screen, Sprite& coin, int x, int y);
 public:
 	void SetTarget( Surface* surface ){ screen = surface; }
 	void Init();
 	void Shutdown();
 	void Tick( float deltaTime );
-	void MouseUp( int button ) 
-	{  
-		
-	}
-	void MouseDown(int button) 
-	{
-		dx = mouseX - ballX;
-		dy = mouseY - ballY;
-
-		ballX += dx - (BALLWIDTH / 2);
-		ballY += dy - (BALLHEIGHT / 2);
-
-	}
+	void MouseUp(int button) { release = button; }
+	void MouseDown(int button) { click = button; }
 	void MouseMove(int x, int y) { mouseX = x, mouseY = y; }
 	void KeyUp( int key ) { /* implement if you want to handle keys */ }
 	void KeyDown( int key ) { /* implement if you want to handle keys */ }
 private:
 	Surface* screen;
-	int mouseX, mouseY, initialMouseX, initialMouseY, newMouseX, newMouseY;
-	int ballX = 200;
-	int ballY = 300;
-	int speedY = 50;
-	int speedX = 50;
-	int dx;
-	int dy;
+	int click, release;
+	int mouseX, mouseY;
+	double dx, dy, angle, xv, yv;
+	
 };
 
 }; // namespace Tmpl8
