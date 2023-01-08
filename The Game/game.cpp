@@ -17,10 +17,32 @@
 #define COINWIDTH 40
 #define COINHEIGHT 40
 
+#define SPIKESWIDTH 128
+#define SPIKESHEIGHT 32
+
 namespace Tmpl8
 {
-	int ballX = 500;
+	static Sprite ball(new Surface("assets/ball2.png"), 1);
+
+	static Sprite leftSideWall(new Surface("assets/ground0.png"), 1);
+	static Sprite rightSideWall(new Surface("assets/ground0.png"), 1);
+
+	static Sprite floor(new Surface("assets/ground1.png"), 1);
+	static Sprite roof(new Surface("assets/ground0.png"), 1);
+
+	static Sprite coin1(new Surface("assets/coin.png"), 1);
+	//static Sprite coin2(new Surface("assets/coin.png"), 1);
+	//static Sprite coin3(new Surface("assets/coin.png"), 1);
+	//static Sprite coin4(new Surface("assets/coin.png"), 1);
+	//static Sprite coin5(new Surface("assets/coin.png"), 1);
+	//static Sprite coin6(new Surface("assets/coin.png"), 1);
+	//static Sprite coin7(new Surface("assets/coin.png"), 1);
+
+	static Sprite spikes(new Surface("assets/spikes.png"), 1);
+
+	int ballX = 1000;
 	int ballY = 300;
+	int coinsCollected = 0;
 	
 	// Draws the ball on the screen
 	void Game::DrawBall(Surface* screen, Sprite& ball)
@@ -64,51 +86,39 @@ namespace Tmpl8
 		}
 	}
 
-	// Draws the Top-Right Ramp
-	void Game::DrawRampTR(Surface* screen, Sprite& rampTR)
-	{
-		rampTR.DrawScaled(SCREENWIDTH - TILEWIDTH, TILEHEIGHT / 2, 128, 128, screen);
-	}
-
-	// Draws the Top-Left Ramp
-	void Game::DrawRampTL(Surface* screen, Sprite& rampTL)
-	{
-		rampTL.DrawScaled(TILEWIDTH / 2, TILEHEIGHT / 2, 128, 128, screen);
-	}
-
-	// Draws the Bottom-Right Ramp
-	void Game::DrawRampBR(Surface* screen, Sprite& rampBR)
-	{
-		rampBR.DrawScaled(SCREENWIDTH - TILEWIDTH, SCREENHEIGHT - ((TILEHEIGHT / 2) + 160), 128, 128, screen);
-	}
-
-	// Draws the Bottom-Left Ramp
-	void Game::DrawRampBL(Surface* screen, Sprite& rampBL)
-	{
-		rampBL.DrawScaled(TILEWIDTH / 2, SCREENHEIGHT - ((TILEHEIGHT / 2) + 160), 128, 128, screen);
-	}
-
-	// Draws the Coin at a desired location
+	// Draws a Coin at a desired location
 	void Game::DrawCoin(Surface* screen, Sprite& coin, int x, int y)
 	{
 		coin.DrawScaled(x, y, COINWIDTH, COINHEIGHT, screen);
 	}
 
-	static Sprite ball(new Surface("assets/ball2.png"), 1);
+	void Game::DrawSpikes(Surface* screen, Sprite& spikes, int x)
+	{
+		spikes.DrawScaled(x, SCREENHEIGHT - 190, SPIKESWIDTH, SPIKESHEIGHT, screen);
+	}
 
-	static Sprite leftSideWall(new Surface("assets/ground0.png"), 1);
-	static Sprite rightSideWall(new Surface("assets/ground0.png"), 1);
 
-	static Sprite floor(new Surface("assets/ground1.png"), 1);
-	static Sprite roof(new Surface("assets/ground0.png"), 1);
+	void DeleteCoin(Surface* screen, Sprite& coin)
+	{
+		screen->Clear(0x222222);
 
-	static Sprite rampTR(new Surface("assets/rampTR.png"), 1);
-	static Sprite rampTL(new Surface("assets/rampTL.png"), 1);
+		// Drawing the ball
+		Game::DrawBall(screen, ball);
 
-	static Sprite rampBR(new Surface("assets/rampBR.png"), 1);
-	static Sprite rampBL(new Surface("assets/rampBL.png"), 1);
+		// Drawing the spikes
+		Game::DrawSpikes(screen, spikes, 500);
+		Game::DrawSpikes(screen, spikes, 1300);
 
-	static Sprite coin(new Surface("assets/coin.png"), 1);
+		// Drawing the following sprites: Floor, Roof, Right-Side Wall, Left-Side Wall
+		Game::DrawFloor(screen, floor);
+		Game::DrawRoof(screen, roof);
+		Game::DrawRightSideWall(screen, rightSideWall);
+		Game::DrawLeftSideWall(screen, leftSideWall);
+	}
+
+
+	
+
 
 	// -----------------------------------------------------------
 	// Initialize the application
@@ -133,12 +143,21 @@ namespace Tmpl8
 		// Clearing the screen and setting the background colour to gray
 		screen->Clear(0x222222);
 
-
 		// Drawing the coins
-		DrawCoin(screen, coin, 500, 300);
+		DrawCoin(screen, coin1, 500, 300);
+		//DrawCoin(screen, coin2, 1000, 700);
+		//DrawCoin(screen, coin3, 1250, 870);
+		//DrawCoin(screen, coin4, 300, 880);
+		//DrawCoin(screen, coin5, 550, 820);
+		//DrawCoin(screen, coin6, 1400, 160);
+		//DrawCoin(screen, coin7, 1600, 600);
 
 		// Drawing the ball
 		DrawBall(screen, ball);
+
+		// Drawing the spikes
+		DrawSpikes(screen, spikes, 500);
+		DrawSpikes(screen, spikes, 1300);
 
 		// Drawing the following sprites: Floor, Roof, Right-Side Wall, Left-Side Wall
 		DrawFloor(screen, floor);
@@ -146,16 +165,10 @@ namespace Tmpl8
 		DrawRightSideWall(screen, rightSideWall);
 		DrawLeftSideWall(screen, leftSideWall);
 
-		// Drawing the following sprites: Top-Right Ramp, Top-Left Ramp, Bottom-Right Ramp, Bottom-Left Ramp
-		DrawRampTR(screen, rampTR);
-		DrawRampTL(screen, rampTL);
-		DrawRampBR(screen, rampBR);
-		DrawRampBL(screen, rampBL);
-
-
+		// Drawing a line from the center of the Ball to the location of the Cursor on the screen
 		screen->Line(ballX + (BALLWIDTH / 2), ballY + (BALLHEIGHT / 2), mouseX, mouseY, 0xff0000);
 
-		
+		// Moving the Ball
 		if (click && !release)
 		{
 			//screen->Print("Mouse", 10, 10, 0xffffff);
@@ -184,11 +197,35 @@ namespace Tmpl8
 		if (ballX < 129 || ballX > SCREENWIDTH - 185) // Checking for collision with the Left Side Wall and Right Side Wall
 		{
 			xv = -xv;
+			ballX += xv;
 		}
 		else if (ballY > SCREENHEIGHT - 215 || ballY < 128) // Checking for collision with the Floor and Roof
 		{
 			yv = -yv;
+			ballY += yv;
 		}
+		else if ((ballX >= 460 && ballX <= 613) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes on theleft
+		{
+			xv = 0;
+			yv = 0;
+			screen->Print("GAME OVER!", 960, 540, 0xffffff);
+		}
+		else if ((ballX >= 1255 && ballX <= 1408) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes onthe right
+		{
+			xv = 0;
+			yv = 0;
+			screen->Print("GAME OVER!", 960, 540, 0xffffff);
+		}
+		else if ((ballX >= 500 && ballX <= 540) && (ballY >= 300 && ballY <= 340))
+		{
+			coinsCollected++;
+			screen->Print("Score +1", 1700, 150, 0xffffff);
+			DeleteCoin(screen, coin1);
+		}
+
+		
+		
+		
 		
 
 		//screen->Print("Game Initialised", 2, 2, 0xffffff);
@@ -201,9 +238,4 @@ namespace Tmpl8
 		//printf("The height of tile1: %i \n", leftSideWall.GetHeight()); --  256 X 256
 		//printf("The width of tile1: %i \n", leftSideWall.GetWidth());
 	}
-
-	/*bool CheckPos(int x, int y)
-	{
-
-	}*/
 };
