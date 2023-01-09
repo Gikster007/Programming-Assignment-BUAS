@@ -53,8 +53,8 @@ void Ball::MoveUpdate(int click, int release, int mouseX, int mouseY)
 		angle = atan2(dy, dx); // Calculates the angle
 
 		// Calculates the velocity 
-		xv = cos(angle) * 15;
-		yv = sin(angle) * 15;
+		xv = cos(angle) * 8;
+		yv = sin(angle) * 8;
 	}
 	if (release) // On release
 	{

@@ -7,4 +7,4 @@ D:\Programming Stuff\Programming Assignment BUAS\The Game\ball.cpp(67,12): warni
 D:\Programming Stuff\Programming Assignment BUAS\The Game\ball.cpp(68,12): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
 D:\Programming Stuff\Programming Assignment BUAS\The Game\ball.cpp(78,12): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
 D:\Programming Stuff\Programming Assignment BUAS\The Game\ball.cpp(83,12): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-  Assignment Game.vcxproj -> D:\Programming Stuff\Programming Assignment BUAS\The Game\Assignment Game_x64_debug.exe
+  Assignment Game.vcxproj -> D:\Programming Stuff\Programming Assignment BUAS\The Game\Assignment Game_x64.exe
