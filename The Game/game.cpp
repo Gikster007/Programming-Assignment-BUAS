@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <vector>
 #include "coin.h"
+#include "ball.h"
 
 #define SCREENWIDTH 1920
 #define SCREENHEIGHT 1080
@@ -33,16 +34,18 @@ namespace Tmpl8
 
 	static Sprite spikes(new Surface("assets/spikes.png"), 1);
 
-	Coin coins[7]{};
 
-	int ballX = 1000;
-	int ballY = 300;
+	Coin coins[7]{};
+	Ball myBall;
+
+	/*int ballX = 1000;
+	int ballY = 300;*/
 	
 	// Draws the ball on the screen
-	void Game::DrawBall(Surface* screen, Sprite& ball)
+	/*void Game::DrawBall(Surface* screen, Sprite& ball)
 	{
 		ball.DrawScaled(ballX, ballY, BALLWIDTH, BALLHEIGHT, screen);
-	}
+	}*/
 
 	// Draws the left-side wall
 	void Game::DrawLeftSideWall(Surface* screen, Sprite& leftWall)
@@ -99,6 +102,8 @@ namespace Tmpl8
 		coins[4] = Coin(&coin, 550, 820);
 		coins[5] = Coin(&coin, 1400, 160);
 		coins[6] = Coin(&coin, 1600, 600);
+
+		myBall = Ball(&ball, 1000, 300);
 	}
 	
 	// -----------------------------------------------------------
@@ -123,7 +128,9 @@ namespace Tmpl8
 		}
 
 		// Drawing the ball
-		DrawBall(screen, ball);
+		//DrawBall(screen, ball);
+
+		myBall.Draw(screen);
 
 		// Drawing the spikes
 		DrawSpikes(screen, spikes, 500);
@@ -135,68 +142,76 @@ namespace Tmpl8
 		DrawRightSideWall(screen, rightSideWall);
 		DrawLeftSideWall(screen, leftSideWall);
 
+		//myBall.DrawLine(screen, mouseX, mouseY);
+
 		// Drawing a line from the center of the Ball to the location of the Cursor on the screen
-		screen->Line(ballX + (BALLWIDTH / 2), ballY + (BALLHEIGHT / 2), mouseX, mouseY, 0xff0000);
+		//screen->Line(myBall.GetBallX() + (BALLWIDTH / 2), myBall.GetBallY() + (BALLHEIGHT / 2), mouseX, mouseY, 0xff0000);
+
+		myBall.MoveUpdate(click, release, mouseX, mouseY);
 
 		// Moving the Ball
-		if (click && !release)
-		{
-			//screen->Print("Mouse", 10, 10, 0xffffff);
-			dx = (mouseX - ballX); // Calculates the difference between x's
-			dy = (mouseY - ballY); // Calculates the difference between y's
-			angle = atan2(dy, dx); // Calculates the angle
+		//if (click && !release)
+		//{
+		//	//screen->Print("Mouse", 10, 10, 0xffffff);
+		//	dx = (mouseX - ballX); // Calculates the difference between x's
+		//	dy = (mouseY - ballY); // Calculates the difference between y's
+		//	angle = atan2(dy, dx); // Calculates the angle
 
-			// Calculates the velocity 
-			xv = cos(angle) * 10;
-			yv = sin(angle) * 10;
-		}
-		if (release) // On release
-		{
-			click = 0; // Reset the click variable
-			release = 0; // Reset the release variable
-		}
+		//	// Calculates the velocity 
+		//	xv = cos(angle) * 10;
+		//	yv = sin(angle) * 10;
+		//}
+		//if (release) // On release
+		//{
+		//	click = 0; // Reset the click variable
+		//	release = 0; // Reset the release variable
+		//}
 
-		if (click == 0) // During release
-		{
-			ballX += xv; // Moves the ball in the new direction on X axis
-			ballY += yv; // Moves the ball in the new direction on Y axis
-		}
+		//if (click == 0) // During release
+		//{
+		//	ballX += xv; // Moves the ball in the new direction on X axis
+		//	ballY += yv; // Moves the ball in the new direction on Y axis
+		//}
+
+
+		myBall.CheckCollision(screen);
+
 
 		// Collision Checking
 
-		if (ballX < 129 || ballX > SCREENWIDTH - 185) // Checking for collision with the Left Side Wall and Right Side Wall
-		{
-			xv = -xv;
-			ballX += xv;
-		}
-		else if (ballY > SCREENHEIGHT - 215 || ballY < 128) // Checking for collision with the Floor and Roof
-		{
-			yv = -yv;
-			ballY += yv;
-		}
-		else if ((ballX >= 460 && ballX <= 613) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes on theleft
-		{
-			xv = 0;
-			yv = 0;
-			screen->Print("YOU DIED!", 960, 540, 0xffffff);
-		}
-		else if ((ballX >= 1255 && ballX <= 1408) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes onthe right
-		{
-			xv = 0;
-			yv = 0;
-			screen->Print("YOU DIED!", 940, 540, 0xffffff);
-		}
+		//if (ballX < 129 || ballX > SCREENWIDTH - 185) // Checking for collision with the Left Side Wall and Right Side Wall
+		//{
+		//	xv = -xv;
+		//	ballX += xv;
+		//}
+		//else if (ballY > SCREENHEIGHT - 215 || ballY < 128) // Checking for collision with the Floor and Roof
+		//{
+		//	yv = -yv;
+		//	ballY += yv;
+		//}
+		//else if ((ballX >= 460 && ballX <= 613) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes on theleft
+		//{
+		//	xv = 0;
+		//	yv = 0;
+		//	screen->Print("YOU DIED!", 960, 540, 0xffffff);
+		//}
+		//else if ((ballX >= 1255 && ballX <= 1408) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes onthe right
+		//{
+		//	xv = 0;
+		//	yv = 0;
+		//	screen->Print("YOU DIED!", 940, 540, 0xffffff);
+		//}
 		
 
 		for (int i = 0; i < 7; i++)
 		{
-			coins[i].CollisionCheck(ballX, ballY, BALLWIDTH, BALLHEIGHT);
+			coins[i].CollisionCheck(myBall.GetBallX(), myBall.GetBallY(), BALLWIDTH, BALLHEIGHT);
 		}
 		
 		if (Coin::HasWon())
 		{
-			xv = 0;
-			yv = 0;
+			myBall.SetXVel(0);
+			myBall.SetYVel(0);
 			screen->Print("YOU WIN!", 950, 540, 0xffffff);
 		}
 		

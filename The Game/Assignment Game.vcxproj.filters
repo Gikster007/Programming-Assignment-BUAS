@@ -9,6 +9,7 @@
       <Filter>template code</Filter>
     </ClCompile>
     <ClCompile Include="coin.cpp" />
+    <ClCompile Include="ball.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -19,6 +20,7 @@
       <Filter>template code</Filter>
     </ClInclude>
     <ClInclude Include="coin.h" />
+    <ClInclude Include="ball.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

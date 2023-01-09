@@ -17,7 +17,6 @@ public:
 	void static DrawRightSideWall(Surface* screen, Sprite& rightWall);
 	void static DrawFloor(Surface* screen, Sprite& floor);
 	void static DrawRoof(Surface* screen, Sprite& roof);
-	void static DrawCoin(Surface* screen, Sprite& coin, int x, int y);
 	void static DrawSpikes(Surface* screen, Sprite& spikes, int x);
 public:
 	void SetTarget( Surface* surface ){ screen = surface; }
@@ -33,7 +32,7 @@ private:
 	Surface* screen;
 	int click, release;
 	int mouseX, mouseY;
-	double dx, dy, angle, xv, yv;
+	
 	
 };
 
