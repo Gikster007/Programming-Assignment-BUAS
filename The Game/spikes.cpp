@@ -38,7 +38,7 @@ void Spikes::Draw(Tmpl8::Surface* screen) const
 // Method that uses the AABB function in order to check for Collisions
 void Spikes::CollisionCheck(int ballX, int ballY, int ballW, int ballH)
 {
-	if (!isHit && spikesAABB(x, ballX, y, ballY, SPIKESWIDTH, BALLWIDTH, SPIKESHEIGHT, BALLHEIGHT))
+	if (!isHit && spikesAABB(x + 20, ballX, y, ballY, 90, BALLWIDTH, SPIKESHEIGHT, BALLHEIGHT))
 	{
 		isHit = true;
 		spikesHit++;
