@@ -12,12 +12,11 @@ class Sprite;
 class Game
 {
 public:
-	void static DrawBall(Surface* screen, Sprite& ball);
+	// Function Headers for the Drawing of Sprites
 	void static DrawLeftSideWall(Surface* screen, Sprite& leftWall);
 	void static DrawRightSideWall(Surface* screen, Sprite& rightWall);
 	void static DrawFloor(Surface* screen, Sprite& floor);
 	void static DrawRoof(Surface* screen, Sprite& roof);
-	void static DrawSpikes(Surface* screen, Sprite& spikes, int x);
 public:
 	void SetTarget( Surface* surface ){ screen = surface; }
 	void Init();
@@ -29,6 +28,7 @@ public:
 	void KeyUp( int key ) { /* implement if you want to handle keys */ }
 	void KeyDown( int key ) { /* implement if you want to handle keys */ }
 private:
+	// Declaration of Attributes
 	Surface* screen;
 	int click, release;
 	int mouseX, mouseY;

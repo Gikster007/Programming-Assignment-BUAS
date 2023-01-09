@@ -5,8 +5,10 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <vector>
+
 #include "coin.h"
 #include "ball.h"
+#include "spikes.h"
 
 #define SCREENWIDTH 1920
 #define SCREENHEIGHT 1080
@@ -22,6 +24,7 @@
 
 namespace Tmpl8
 {
+	// Creating the Sprites that will be used throughout the program
 	static Sprite ball(new Surface("assets/ball2.png"), 1);
 
 	static Sprite leftSideWall(new Surface("assets/ground0.png"), 1);
@@ -35,17 +38,10 @@ namespace Tmpl8
 	static Sprite spikes(new Surface("assets/spikes.png"), 1);
 
 
-	Coin coins[7]{};
 	Ball myBall;
+	Coin coins[7]{};
+	Spikes mySpikes[2]{};
 
-	/*int ballX = 1000;
-	int ballY = 300;*/
-	
-	// Draws the ball on the screen
-	/*void Game::DrawBall(Surface* screen, Sprite& ball)
-	{
-		ball.DrawScaled(ballX, ballY, BALLWIDTH, BALLHEIGHT, screen);
-	}*/
 
 	// Draws the left-side wall
 	void Game::DrawLeftSideWall(Surface* screen, Sprite& leftWall)
@@ -83,18 +79,15 @@ namespace Tmpl8
 		}
 	}
 
-	void Game::DrawSpikes(Surface* screen, Sprite& spikes, int x)
-	{
-		spikes.DrawScaled(x, SCREENHEIGHT - 190, SPIKESWIDTH, SPIKESHEIGHT, screen);
-	}
-
-
 	// -----------------------------------------------------------
 	// Initialize the application
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		// Initializing an array of coins
+		// Initializing the Ball Object
+		myBall = Ball(&ball, 1000, 300);
+
+		// Initializing an array of Coin Objects
 		coins[0] = Coin(&coin, 300, 500);
 		coins[1] = Coin(&coin, 1000, 700);
 		coins[2] = Coin(&coin, 1250, 870);
@@ -103,7 +96,9 @@ namespace Tmpl8
 		coins[5] = Coin(&coin, 1400, 160);
 		coins[6] = Coin(&coin, 1600, 600);
 
-		myBall = Ball(&ball, 1000, 300);
+		// Initializing an array of Spikes Objects
+		mySpikes[0] = Spikes(&spikes, 500, SCREENHEIGHT - 190);
+		mySpikes[1] = Spikes(&spikes, 1300, SCREENHEIGHT - 190);
 	}
 	
 	// -----------------------------------------------------------
@@ -121,20 +116,21 @@ namespace Tmpl8
 		// Clearing the screen and setting the background colour to gray
 		screen->Clear(0x222222);
 
-		// Drawing the coins
+		// Drawing the coins on the Screen
 		for (int i = 0; i < 7; i++)
 		{
 			coins[i].Draw(screen);
 		}
 
-		// Drawing the ball
-		//DrawBall(screen, ball);
+		// Drawing the ball on the Screen
 
 		myBall.Draw(screen);
 
-		// Drawing the spikes
-		DrawSpikes(screen, spikes, 500);
-		DrawSpikes(screen, spikes, 1300);
+		// Drawing the Spikes on the Screen
+		for (int i = 0; i < 2; i++)
+		{
+			mySpikes[i].Draw(screen);
+		}
 
 		// Drawing the following sprites: Floor, Roof, Right-Side Wall, Left-Side Wall
 		DrawFloor(screen, floor);
@@ -144,74 +140,41 @@ namespace Tmpl8
 
 		//myBall.DrawLine(screen, mouseX, mouseY);
 
-		// Drawing a line from the center of the Ball to the location of the Cursor on the screen
-		//screen->Line(myBall.GetBallX() + (BALLWIDTH / 2), myBall.GetBallY() + (BALLHEIGHT / 2), mouseX, mouseY, 0xff0000);
+			// Drawing a line from the center of the Ball to the location of the Cursor on the screen
+			//screen->Line(myBall.GetBallX() + (BALLWIDTH / 2), myBall.GetBallY() + (BALLHEIGHT / 2), mouseX, mouseY, 0xff0000);
+
+		
+
+		// Moving the Ball
 
 		myBall.MoveUpdate(click, release, mouseX, mouseY);
 
-		// Moving the Ball
-		//if (click && !release)
-		//{
-		//	//screen->Print("Mouse", 10, 10, 0xffffff);
-		//	dx = (mouseX - ballX); // Calculates the difference between x's
-		//	dy = (mouseY - ballY); // Calculates the difference between y's
-		//	angle = atan2(dy, dx); // Calculates the angle
-
-		//	// Calculates the velocity 
-		//	xv = cos(angle) * 10;
-		//	yv = sin(angle) * 10;
-		//}
-		//if (release) // On release
-		//{
-		//	click = 0; // Reset the click variable
-		//	release = 0; // Reset the release variable
-		//}
-
-		//if (click == 0) // During release
-		//{
-		//	ballX += xv; // Moves the ball in the new direction on X axis
-		//	ballY += yv; // Moves the ball in the new direction on Y axis
-		//}
-
-
-		myBall.CheckCollision(screen);
-
 
 		// Collision Checking
-
-		//if (ballX < 129 || ballX > SCREENWIDTH - 185) // Checking for collision with the Left Side Wall and Right Side Wall
-		//{
-		//	xv = -xv;
-		//	ballX += xv;
-		//}
-		//else if (ballY > SCREENHEIGHT - 215 || ballY < 128) // Checking for collision with the Floor and Roof
-		//{
-		//	yv = -yv;
-		//	ballY += yv;
-		//}
-		//else if ((ballX >= 460 && ballX <= 613) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes on theleft
-		//{
-		//	xv = 0;
-		//	yv = 0;
-		//	screen->Print("YOU DIED!", 960, 540, 0xffffff);
-		//}
-		//else if ((ballX >= 1255 && ballX <= 1408) && (ballY >= 840 && ballY <= 890)) // Checking for collision with the Spikes onthe right
-		//{
-		//	xv = 0;
-		//	yv = 0;
-		//	screen->Print("YOU DIED!", 940, 540, 0xffffff);
-		//}
 		
+		myBall.CollisionCheck(screen); // Checking if the Ball collides with the Roof, Floor, Right-Side Wall or Left-Side Wall
 
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 2; i++)  // Checking if the Ball collides with the Spikes
+		{
+			mySpikes[i].CollisionCheck(myBall.GetBallX(), myBall.GetBallY(), BALLWIDTH, BALLHEIGHT);
+		}
+
+		if (Spikes::HasLost()) // If the Ball has collided with the Spikes, then the Game is Lost and Text is printed to the Screen
+		{
+			myBall.SetXVel(0); // Ball is stopped
+			myBall.SetYVel(0); // Ball is stopped
+			screen->Print("YOU DIED!", 950, 540, 0xffffff);
+		}
+
+		for (int i = 0; i < 7; i++) // Checking if the Ball has collided with the Coins, if yes, the Coins will disappear from the Screen and the amount of Collected Coins is incremented
 		{
 			coins[i].CollisionCheck(myBall.GetBallX(), myBall.GetBallY(), BALLWIDTH, BALLHEIGHT);
 		}
-		
-		if (Coin::HasWon())
+
+		if (Coin::HasWon()) // If the user collects a total amount of 5 Coins, the Game is Won and Text is printed on the Screen
 		{
-			myBall.SetXVel(0);
-			myBall.SetYVel(0);
+			myBall.SetXVel(0); // Ball is stopped
+			myBall.SetYVel(0); // Ball is stopped
 			screen->Print("YOU WIN!", 950, 540, 0xffffff);
 		}
 		

@@ -225,6 +225,7 @@
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="spikes.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
   </ItemGroup>
@@ -232,6 +233,7 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="spikes.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
   </ItemGroup>

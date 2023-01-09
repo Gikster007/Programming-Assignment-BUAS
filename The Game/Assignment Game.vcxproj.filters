@@ -10,6 +10,7 @@
     </ClCompile>
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="ball.cpp" />
+    <ClCompile Include="spikes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -21,6 +22,7 @@
     </ClInclude>
     <ClInclude Include="coin.h" />
     <ClInclude Include="ball.h" />
+    <ClInclude Include="spikes.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
